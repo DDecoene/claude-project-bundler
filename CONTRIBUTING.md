@@ -7,7 +7,7 @@ Thank you for your interest in contributing to Claude Project Bundle (CPB)! This
 1. Fork the repository
 2. Clone your fork:
    ```bash
-   git clone https://github.com/your-username/cpb.git
+   git clone https://github.com/ddecoene/cpb.git
    cd cpb
    ```
 3. Install dependencies:

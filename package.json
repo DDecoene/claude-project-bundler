@@ -11,7 +11,8 @@
         "bin/",
         "lib/",
         "README.md",
-        "LICENSE"
+        "LICENSE",
+        "CONTRIBUTING.md"
     ],
     "scripts": {
         "test": "node --test test/*.test.js",

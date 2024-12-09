@@ -7,13 +7,13 @@ Claude Project Bundle (CPB) creates comprehensive project snapshots for maintain
 You can install CPB globally for regular use:
 
 ```bash
-npm install -g cpb
+npm install -g claude-project-bundler
 ```
 
 Or use it immediately without installation via npx:
 
 ```bash
-npx cpb [directory]
+npx claude-project-bundler [directory]
 ```
 
 ### Requirements
@@ -26,7 +26,7 @@ npx cpb [directory]
 Basic usage with default settings:
 
 ```bash
-cpb
+claude-project-bundler
 ```
 
 Specify a different project directory:
@@ -138,6 +138,8 @@ Example output structure:
 
 ## Command Line Options
 
+The command-line interface is available through the `cpb` command:
+
 ```bash
 Usage: cpb [options] [directory]
 
@@ -174,6 +176,6 @@ Dennis Decoene
 
 ## Support
 
-- Report bugs: [Issue Tracker](https://github.com/ddecoene/cpb/issues)
-- Get help: [Discussions](https://github.com/ddecoene/cpb/discussions)
-- Documentation: [Wiki](https://github.com/ddecoene/cpb/wiki)
+- Report bugs: [Issue Tracker](https://github.com/ddecoene/claude-project-bundler/issues)
+- Get help: [Discussions](https://github.com/ddecoene/claude-project-bundler/discussions)
+- Documentation: [Wiki](https://github.com/ddecoene/claude-project-bundler/wiki)
