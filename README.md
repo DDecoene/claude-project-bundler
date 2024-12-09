@@ -164,11 +164,11 @@ CPB automatically detects and handles various project types:
 
 ## Contributing
 
-Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+Contributions are welcome! Please read our [Contributing Guidelines](https://github.com/DDecoene/claude-project-bundler/blob/main/CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/DDecoene/claude-project-bundler/blob/main/LICENSE) file for details.
 
 ## Author
 
