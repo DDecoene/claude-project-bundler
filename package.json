@@ -4,7 +4,7 @@
     "description": "Claude Project Bundle - Create project knowledge bundles for Claude AI assistant",
     "main": "lib/index.js",
     "bin": {
-        "cpb": "./bin/cpb.js"
+        "cpb": "bin/cpb.js"
     },
     "type": "module",
     "files": [
