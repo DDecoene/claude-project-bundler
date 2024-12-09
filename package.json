@@ -1,10 +1,10 @@
 {
-    "name": "cpb",
+    "name": "claude-project-bundler",
     "version": "0.1.0",
-    "description": "Claude Project Bundle - Create project knowledge bundles for Claude AI assistant",
+    "description": "Create project knowledge bundles for Claude AI assistant",
     "main": "lib/index.js",
     "bin": {
-        "cpb": "bin/cpb.js"
+        "cpb": "./bin/cpb.js"
     },
     "type": "module",
     "files": [
@@ -32,12 +32,12 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/ddecoene/cpb.git"
+        "url": "git+https://github.com/ddecoene/claude-project-bundler.git"
     },
     "bugs": {
-        "url": "https://github.com/ddecoene/cpb/issues"
+        "url": "https://github.com/ddecoene/claude-project-bundler/issues"
     },
-    "homepage": "https://github.com/ddecoene/cpb#readme",
+    "homepage": "https://github.com/ddecoene/claude-project-bundler#readme",
     "dependencies": {
         "chalk": "^5.3.0",
         "commander": "^11.1.0",
