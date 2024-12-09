@@ -1,33 +1,49 @@
 # Claude Project Bundle (CPB)
 
-Claude Project Bundle (CPB) is a tool that helps you maintain context when working with Claude on software projects. It creates comprehensive project snapshots that you can share at the start of each conversation, ensuring Claude understands your project's current state and history.
+Claude Project Bundle (CPB) creates comprehensive project snapshots for maintaining context in conversations with Claude AI. When working on complex projects, each new conversation with Claude starts fresh. CPB solves this by generating a well-structured XML document containing your project's current state, making it easy for Claude to understand your project's context.
 
-## Quick Start
+## Installation
 
-You can use CPB immediately without installation using npx:
+You can install CPB globally for regular use:
+
+```bash
+npm install -g cpb
+```
+
+Or use it immediately without installation via npx:
 
 ```bash
 npx cpb [directory]
 ```
 
-Or install it globally for regular use:
+### Requirements
+
+- Node.js version 18 or higher
+- npm version 7 or higher
+
+## Usage
+
+Basic usage with default settings:
 
 ```bash
-npm install -g cpb
-cpb [directory]
+cpb
 ```
 
-## Why CPB?
+Specify a different project directory:
 
-When working with AI assistants like Claude on complex projects, maintaining context across conversations can be challenging. Each new conversation starts fresh, without knowledge of your project's structure or previous discussions. CPB solves this by:
+```bash
+cpb /path/to/your/project
+```
 
-1. Creating a comprehensive snapshot of your project
-2. Organizing it in a format Claude can easily understand
-3. Maintaining project context across conversations
+With custom output location:
+
+```bash
+cpb --output ./my-bundles --filename project-snapshot.txt
+```
 
 ## Configuration
 
-CPB works out of the box with sensible defaults, but you can customize its behavior by creating a `cpb.config.json` file in your project root:
+CPB works with sensible defaults but can be customized through a configuration file. Create a `cpb.config.json` in your project root:
 
 ```json
 {
@@ -38,28 +54,62 @@ CPB works out of the box with sensible defaults, but you can customize its behav
   "files": {
     "include": {
       "text": [".txt", ".md"],
-      "code": [".js", ".ts"],
-      "docs": [".adoc"]
+      "code": [".js", ".ts", ".py"],
+      "docs": [".adoc", ".rst"],
+      "config": [".json", ".yml"]
     },
     "exclude": {
       "directories": ["node_modules", "dist"],
       "files": [".env", ".DS_Store"],
       "patterns": ["*.test.js", "*.spec.ts"]
+    },
+    "binary": {
+      "extensions": [".png", ".jpg", ".pdf"],
+      "maxSize": 1048576
+    }
+  },
+  "project": {
+    "mainFiles": ["README.md", "package.json"],
+    "typeRules": {
+      "node": ["package.json"],
+      "python": ["requirements.txt"]
     }
   }
 }
 ```
 
-### Configuration Options
+### Output Format
 
-- `output`: Controls where and how the bundle is saved
-  - `directory`: Output directory location
-  - `filename`: Name of the bundle file
+CPB generates a structured XML document containing:
 
-- `files`: Defines what files to include or exclude
-  - `include`: File types to process
-  - `exclude`: Files and patterns to ignore
-  - `binary`: How to handle binary files
+1. Project Metadata
+   - Creation timestamp
+   - Project path
+   - Configuration settings
+
+2. File Contents
+   - Organized by file type (code, docs, config)
+   - Preserves directory structure
+   - Includes file content with proper XML escaping
+
+Example output structure:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+  <metadata>
+    <created>2024-12-09T21:15:11.296Z</created>
+    <projectPath>/path/to/project</projectPath>
+    <config>...</config>
+  </metadata>
+  <files>
+    <file path="src/index.js" type="code">
+      <content>// File content here</content>
+    </file>
+    ...
+  </files>
+</bundle>
+```
 
 ## Using with Claude
 
@@ -68,7 +118,7 @@ CPB works out of the box with sensible defaults, but you can customize its behav
    cpb
    ```
 
-2. Share the generated bundle at the start of your Claude conversation
+2. Start a new conversation with Claude and share the generated bundle file.
 
 3. Provide context about your project:
    ```
@@ -76,15 +126,15 @@ CPB works out of the box with sensible defaults, but you can customize its behav
    that contains my project's current state. Please reference this context as we work.
    ```
 
+4. Regenerate the bundle when making significant project changes to keep Claude's context current.
+
 ## Best Practices
 
-1. Regenerate the bundle when making significant project changes
-
-2. Share the bundle at the start of new conversations
-
-3. Create a `.cpbignore` file for project-specific exclusions
-
-4. Use custom configuration for specialized project requirements
+1. Keep bundles up to date with your project's latest state
+2. Use `.cpbignore` for project-specific exclusions
+3. Share bundles at the start of new conversations
+4. Include relevant configuration files in your bundle
+5. Maintain a clean project structure for better context
 
 ## Command Line Options
 
@@ -95,47 +145,35 @@ Options:
   -V, --version           Output version number
   -o, --output <path>     Output directory (default: "./out")
   -f, --filename <name>   Output filename (default: "project_bundle.txt")
-  --config <path>         Custom config file path
+  --config <path>        Custom config file path
   -h, --help             Display help information
 ```
 
+## Project Type Support
+
+CPB automatically detects and handles various project types:
+
+- Node.js/JavaScript/TypeScript
+- Python
+- Ruby
+- Java
+- AsciiDoc documentation
+- General documentation (Markdown, RST)
+
 ## Contributing
 
-Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting pull requests.
+Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Example Configurations
+## Author
 
-### TypeScript Project
-```json
-{
-  "files": {
-    "include": {
-      "code": [".ts", ".tsx"],
-      "docs": [".md"]
-    },
-    "exclude": {
-      "patterns": ["*.test.ts", "*.spec.ts", "*.d.ts"]
-    }
-  }
-}
-```
+Dennis Decoene
 
-### Python Project
-```json
-{
-  "files": {
-    "include": {
-      "code": [".py"],
-      "docs": [".rst", ".md"]
-    },
-    "exclude": {
-      "directories": ["venv", "__pycache__"],
-      "patterns": ["*.pyc"]
-    }
-  }
-}
-```
+## Support
+
+- Report bugs: [Issue Tracker](https://github.com/ddecoene/cpb/issues)
+- Get help: [Discussions](https://github.com/ddecoene/cpb/discussions)
+- Documentation: [Wiki](https://github.com/ddecoene/cpb/wiki)
