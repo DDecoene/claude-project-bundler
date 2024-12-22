@@ -2,6 +2,7 @@ export interface CPBConfig {
     output: {
       directory: string;
       filename: string;
+      timestamped?: boolean;
     };
     
     files: {

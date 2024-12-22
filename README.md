@@ -1,6 +1,6 @@
 # Claude Project Bundle (CPB)
 
-Claude Project Bundle (CPB) creates comprehensive project snapshots for maintaining context in conversations with Claude AI. When working on complex projects, each new conversation with Claude starts fresh. CPB solves this by generating a well-structured XML document containing your project's current state, making it easy for Claude to understand your project's context.
+Claude Project Bundle (CPB) creates comprehensive project snapshots for maintaining context in conversations with Claude AI. When working with complex projects, each new conversation with Claude starts fresh. CPB solves this by generating a well-structured XML document containing your project's current state, making it easy for Claude to understand your project's context.
 
 ## Installation
 
@@ -26,45 +26,62 @@ npx claude-project-bundler [directory]
 Basic usage with default settings:
 
 ```bash
+# Using the installed command
+cpb
+
+# Or using the full command
 claude-project-bundler
 ```
 
-Specify a different project directory:
+Create a bundle for a specific directory:
 
 ```bash
 cpb /path/to/your/project
 ```
 
-With custom output location:
+Create a bundle with custom output location:
 
 ```bash
 cpb --output ./my-bundles --filename project-snapshot.txt
 ```
 
+Initialize a new configuration file:
+
+```bash
+cpb init
+```
+
 ## Configuration
 
-CPB works with sensible defaults but can be customized through a configuration file. Create a `cpb.config.json` in your project root:
+CPB works with sensible defaults but can be customized through a configuration file. Create one using:
+
+```bash
+cpb init
+```
+
+Or manually create `cpb.config.json` in your project root:
 
 ```json
 {
   "output": {
     "directory": "./cpb-output",
-    "filename": "project-knowledge.txt"
+    "filename": "project-knowledge.txt",
+    "timestamped": true
   },
   "files": {
     "include": {
-      "text": [".txt", ".md"],
-      "code": [".js", ".ts", ".py"],
-      "docs": [".adoc", ".rst"],
-      "config": [".json", ".yml"]
+      "asciidoc": [".adoc", ".asc", ".asciidoc"],
+      "code": [".js", ".jsx", ".ts", ".tsx", ".py", ".rb", ".java", ".cpp"],
+      "docs": [".md", ".rst", ".adoc"],
+      "config": [".json", ".yml", ".yaml", ".toml"]
     },
     "exclude": {
-      "directories": ["node_modules", "dist"],
-      "files": [".env", ".DS_Store"],
-      "patterns": ["*.test.js", "*.spec.ts"]
+      "directories": ["node_modules", "dist", "build", ".git"],
+      "files": [".env", ".DS_Store", "package-lock.json"],
+      "patterns": ["*.test.*", "*.spec.*"]
     },
     "binary": {
-      "extensions": [".png", ".jpg", ".pdf"],
+      "extensions": [".png", ".jpg", ".pdf", ".zip"],
       "maxSize": 1048576
     }
   },
@@ -72,7 +89,8 @@ CPB works with sensible defaults but can be customized through a configuration f
     "mainFiles": ["README.md", "package.json"],
     "typeRules": {
       "node": ["package.json"],
-      "python": ["requirements.txt"]
+      "python": ["requirements.txt", "setup.py"],
+      "asciidoc": [".adoc", ".asc"]
     }
   }
 }
@@ -98,7 +116,7 @@ Example output structure:
 <?xml version="1.0" encoding="UTF-8"?>
 <bundle>
   <metadata>
-    <created>2024-12-09T21:15:11.296Z</created>
+    <created>2024-12-22T16:18:55.123Z</created>
     <projectPath>/path/to/project</projectPath>
     <config>...</config>
   </metadata>
@@ -106,9 +124,28 @@ Example output structure:
     <file path="src/index.js" type="code">
       <content>// File content here</content>
     </file>
-    ...
   </files>
 </bundle>
+```
+
+## Command Line Interface
+
+The CLI provides several commands and options:
+
+```bash
+Usage: cpb [options] [directory]
+
+Options:
+  -V, --version           Output version number
+  -o, --output <path>     Output directory (default: "./out")
+  -f, --filename <name>   Output filename (default: "project_bundle.txt")
+  --config <path>        Custom config file path
+  --no-timestamp        Disable timestamp in filename
+  -h, --help             Display help information
+
+Commands:
+  bundle [options] [dir]  Create a project bundle (default)
+  init [options] [dir]    Create a default configuration file
 ```
 
 ## Using with Claude
@@ -133,34 +170,10 @@ Example output structure:
 1. Keep bundles up to date with your project's latest state
 2. Use `.cpbignore` for project-specific exclusions
 3. Share bundles at the start of new conversations
-4. Include relevant configuration files in your bundle
+4. Include relevant configuration files
 5. Maintain a clean project structure for better context
-
-## Command Line Options
-
-The command-line interface is available through the `cpb` command:
-
-```bash
-Usage: cpb [options] [directory]
-
-Options:
-  -V, --version           Output version number
-  -o, --output <path>     Output directory (default: "./out")
-  -f, --filename <name>   Output filename (default: "project_bundle.txt")
-  --config <path>        Custom config file path
-  -h, --help             Display help information
-```
-
-## Project Type Support
-
-CPB automatically detects and handles various project types:
-
-- Node.js/JavaScript/TypeScript
-- Python
-- Ruby
-- Java
-- AsciiDoc documentation
-- General documentation (Markdown, RST)
+6. Use timestamped filenames to track bundle versions
+7. Exclude unnecessary files and directories
 
 ## Contributing
 
