@@ -7,6 +7,7 @@ import { program } from 'commander';
 import chalk from 'chalk';
 import { resolve } from 'path';
 import { Bundler } from '../lib/bundler.js';
+import { Extractor } from '../lib/extractor.js';
 import { defaultConfig } from '../lib/config.js';
 import { logger } from '../lib/logger.js';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
@@ -110,6 +111,40 @@ program
       
     } catch (error) {
       logger.error('\nError creating configuration:', error.message);
+      process.exit(1);
+    }
+  });
+
+// Extract command for recreating project files from bundle
+program
+  .command('extract')
+  .description('extract project files from a bundle')
+  .argument('<bundle>', 'path to bundle file')
+  .option('-o, --output <directory>', 'output directory', './extracted')
+  .action((bundlePath, options) => {
+    try {
+      logger.info('Extracting project files from bundle...');
+      
+      const extractor = new Extractor(bundlePath, options.output);
+      const result = extractor.extract();
+      
+      if (result.success) {
+        logger.success('\n✨ Project files extracted successfully!');
+        logger.stats('\nStats:');
+        logger.stats(`  Total files: ${result.stats.totalFiles}`);
+        logger.stats(`  Successfully extracted: ${result.stats.successful}`);
+        Object.entries(result.stats.fileTypes).forEach(([type, count]) => {
+          logger.stats(`  ${type}: ${count} files`);
+        });
+      } else {
+        logger.warn('\n⚠️ Some files failed to extract');
+        logger.stats('\nStats:');
+        logger.stats(`  Total files: ${result.stats.totalFiles}`);
+        logger.stats(`  Successfully extracted: ${result.stats.successful}`);
+        logger.stats(`  Failed to extract: ${result.stats.failed}`);
+      }
+    } catch (error) {
+      logger.error('\nError extracting files:', error.message);
       process.exit(1);
     }
   });
