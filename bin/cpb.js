@@ -121,12 +121,12 @@ program
   .description('extract project files from a bundle')
   .argument('<bundle>', 'path to bundle file')
   .option('-o, --output <directory>', 'output directory', './extracted')
-  .action(async (bundlePath, options) => {
+  .action((bundlePath, options) => {
     try {
       logger.info('Extracting project files from bundle...');
       
       const extractor = new Extractor(bundlePath, options.output);
-      const result = await extractor.extract();
+      const result = extractor.extract();
       
       if (result.success) {
         logger.success('\n✨ Project files extracted successfully!');
