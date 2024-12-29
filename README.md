@@ -51,6 +51,12 @@ Initialize a new configuration file:
 cpb init
 ```
 
+Extract project files from a bundle:
+
+```bash
+cpb extract path/to/bundle.txt -o ./extracted-project
+```
+
 ## Configuration
 
 CPB works with sensible defaults but can be customized through a configuration file. Create one using:
@@ -72,7 +78,7 @@ Or manually create `cpb.config.json` in your project root:
     "include": {
       "asciidoc": [".adoc", ".asc", ".asciidoc"],
       "code": [".js", ".jsx", ".ts", ".tsx", ".py", ".rb", ".java", ".cpp"],
-      "docs": [".md", ".rst", ".adoc"],
+      "docs": [".md", ".json", ".yaml", ".yml"],
       "config": [".json", ".yml", ".yaml", ".toml"]
     },
     "exclude": {
@@ -146,6 +152,9 @@ Options:
 Commands:
   bundle [options] [dir]  Create a project bundle (default)
   init [options] [dir]    Create a default configuration file
+  extract <bundle>        Extract project files from a bundle
+    Options:
+      -o, --output <directory>  Output directory (default: "./extracted")
 ```
 
 ## Using with Claude
@@ -157,23 +166,51 @@ Commands:
 
 2. Start a new conversation with Claude and share the generated bundle file.
 
-3. Provide context about your project:
+3. Provide context and instructions for optimal collaboration. Here's an example that combines project context with specific working preferences:
    ```
    I'm working on [project description]. I've shared a CPB (Claude Project Bundle) 
    that contains my project's current state. Please reference this context as we work.
+
+   Please follow these instructions for our collaboration:
+   - always look at the latest project bundle in the project knowledge. my chat prompts will always be about the code
+   - always use yarn instead of npm
+   - always give full artifacts, never partial. never tell me change this and that. this is very confusing and does not allow me to copy-paste code easily
+   - try to do as little changes as possible, so as not to mess up other areas of a file you are updating
+   - always specify the full path in accordance with the project bundle in the project knowledge
+   - if you ever need to link to the github repo, my username is my_github_username and the repo lives at https://github.com/my_github_username/reponame
    ```
 
 4. Regenerate the bundle when making significant project changes to keep Claude's context current.
 
+## Project File Recovery
+
+You can reconstruct your project files from a bundle using the extract command:
+
+```bash
+cpb extract path/to/bundle.txt -o ./extracted-project
+```
+
+This will:
+- Parse the bundle XML file
+- Recreate the original directory structure
+- Extract all files with their content
+- Preserve file types and paths
+- Provide statistics about the extraction process
+
+This feature is useful for:
+- Project backup and recovery
+- Creating project templates
+- Sharing project structures
+- Quick project setup for testing
+
 ## Best Practices
 
 1. Keep bundles up to date with your project's latest state
-2. Use `.cpbignore` for project-specific exclusions
-3. Share bundles at the start of new conversations
-4. Include relevant configuration files
-5. Maintain a clean project structure for better context
-6. Use timestamped filenames to track bundle versions
-7. Exclude unnecessary files and directories
+2. Share bundles at the start of new conversations
+3. Include relevant configuration files
+4. Maintain a clean project structure for better context
+5. Use timestamped filenames to track bundle versions
+6. Exclude unnecessary files and directories
 
 ## Contributing
 
