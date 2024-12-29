@@ -1,20 +1,32 @@
 #!/usr/bin/env node
 
+// Load environment variables first, before any other imports
+import '../lib/env.js';
+
 import { program } from 'commander';
 import chalk from 'chalk';
 import { resolve } from 'path';
 import { Bundler } from '../lib/bundler.js';
 import { defaultConfig } from '../lib/config.js';
+import { logger } from '../lib/logger.js';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { ROOT_DIR } from '../lib/env.js';
 
 // Get package.json for version info
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 const packageJson = JSON.parse(
-  readFileSync(join(__dirname, '../package.json'), 'utf8')
+  readFileSync(join(ROOT_DIR, 'package.json'), 'utf8')
 );
+
+// Debug environment settings if enabled
+if (process.env.CPB_DEBUG === 'true') {
+  logger.debug('Environment Settings:');
+  logger.debug('CPB_DEBUG:', process.env.CPB_DEBUG);
+  logger.debug('CPB_LOG_LEVEL:', process.env.CPB_LOG_LEVEL);
+  logger.debug('CPB_NO_COLOR:', process.env.CPB_NO_COLOR);
+  logger.debug('Project Root:', ROOT_DIR);
+}
 
 program
   .name('cpb')
@@ -35,14 +47,14 @@ program
       const projectPath = resolve(directory);
       
       // Log initial settings
-      console.log(chalk.blue('Creating Claude Project Bundle...'));
-      console.log(chalk.gray(`Directory: ${projectPath}`));
-      console.log(chalk.gray(`Output: ${options.output}`));
-      console.log(chalk.gray(`Filename: ${options.filename}`));
+      logger.info('Creating Claude Project Bundle...');
+      logger.debug(`Directory: ${projectPath}`);
+      logger.debug(`Output: ${options.output}`);
+      logger.debug(`Filename: ${options.filename}`);
       if (options.config) {
-        console.log(chalk.gray(`Config: ${options.config}`));
+        logger.debug(`Config: ${options.config}`);
       }
-      console.log(chalk.gray(`Timestamp enabled: ${options.timestamp !== false}`));
+      logger.debug(`Timestamp enabled: ${options.timestamp !== false}`);
       
       const bundler = new Bundler(projectPath, {
         configPath: options.config,
@@ -55,16 +67,16 @@ program
       
       const result = await bundler.bundle();
       
-      // Log success and stats
-      console.log(chalk.green('\n✨ Bundle created successfully!'));
-      console.log(chalk.gray(`Location: ${result.outputPath}`));
-      console.log(chalk.gray('Stats:'));
+      // Success and stats messages that are always shown
+      logger.success('\n✨ Bundle created successfully!');
+      logger.stats(`\nLocation: ${result.outputPath}\n`);
+      logger.stats('\nStats:');
       Object.entries(result.stats.fileTypes).forEach(([type, count]) => {
-        console.log(chalk.gray(`  ${type}: ${count} files`));
+        logger.stats(`  ${type}: ${count} files`);
       });
       
     } catch (error) {
-      console.error(chalk.red('Error creating bundle:'), error.message);
+      logger.error('\nError creating bundle:', error.message);
       process.exit(1);
     }
   });
@@ -80,23 +92,24 @@ program
       const targetPath = resolve(directory);
       const configPath = join(targetPath, 'cpb.config.json');
       
-      console.log(chalk.blue('Creating default configuration file...'));
-      console.log(chalk.gray(`Target directory: ${targetPath}`));
+      logger.info('Creating default configuration file...');
+      logger.debug(`Target directory: ${targetPath}`);
       
       // Check if file exists and --force not used
       if (!options.force && existsSync(configPath)) {
-        console.error(chalk.red('Configuration file already exists. Use --force to overwrite.'));
+        logger.error('Configuration file already exists. Use --force to overwrite.');
         process.exit(1);
       }
       
       // Write default config
       writeFileSync(configPath, JSON.stringify(defaultConfig, null, 2), 'utf8');
       
-      console.log(chalk.green('\n✨ Configuration file created successfully!'));
-      console.log(chalk.gray(`Location: ${configPath}`));
+      // Success messages that are always shown
+      logger.success('\n✨ Configuration file created successfully!');
+      logger.stats(`\nLocation: ${configPath}\n`);
       
     } catch (error) {
-      console.error(chalk.red('Error creating configuration:'), error.message);
+      logger.error('\nError creating configuration:', error.message);
       process.exit(1);
     }
   });

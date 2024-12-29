@@ -7,7 +7,7 @@ Claude Project Bundle (CPB) creates comprehensive project snapshots for maintain
 You can install CPB globally for regular use:
 
 ```bash
-npm install -g claude-project-bundler
+yarn global add claude-project-bundler
 ```
 
 Or use it immediately without installation via npx:
@@ -19,7 +19,7 @@ npx claude-project-bundler [directory]
 ### Requirements
 
 - Node.js version 18 or higher
-- npm version 7 or higher
+- yarn version 1 or higher
 
 ## Usage
 
