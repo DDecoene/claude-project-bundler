@@ -1,0 +1,97 @@
+{
+  "output": {
+    "directory": "./dist",
+    "filename": "project_bundle.txt",
+    "timestamped": true
+  },
+  "files": {
+    "include": {
+      "asciidoc": [
+        ".adoc",
+        ".asc",
+        ".asciidoc"
+      ],
+      "code": [
+        ".js",
+        ".jsx",
+        ".ts",
+        ".tsx",
+        ".py",
+        ".rb",
+        ".java",
+        ".cpp",
+        ".html",
+        ".css",
+        ".scss"
+      ],
+      "docs": [
+        ".md",
+        ".json",
+        ".yaml",
+        ".yml"
+      ],
+      "config": [
+        ".json",
+        ".yml",
+        ".yaml",
+        ".toml"
+      ]
+    },
+    "exclude": {
+      "directories": [
+        "node_modules",
+        ".git",
+        "dist",
+        "build",
+        ".vercel",
+        ".github",
+        ".vscode",
+        "out"
+      ],
+      "files": [
+        ".env",
+        ".DS_Store",
+        "package-lock.json",
+        "yarn.lock",
+        ".gitignore",
+        "cpb.config.json"
+      ],
+      "patterns": [
+        "*.log"
+      ]
+    },
+    "binary": {
+      "extensions": [
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".gif",
+        ".pdf",
+        ".mp4",
+        ".mov",
+        ".zip",
+        ".tar",
+        ".gz"
+      ],
+      "maxSize": 1048576
+    }
+  },
+  "project": {
+    "mainFiles": [
+      "README.md"
+    ],
+    "typeRules": {
+      "node": [
+        "package.json"
+      ],
+      "python": [
+        "requirements.txt",
+        "setup.py"
+      ],
+      "asciidoc": [
+        ".adoc",
+        ".asc"
+      ]
+    }
+  }
+}

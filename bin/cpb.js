@@ -39,8 +39,8 @@ program
   .command('bundle', { isDefault: true })
   .description('create a project bundle')
   .argument('[directory]', 'project directory to bundle', '.')
-  .option('-o, --output <path>', 'output directory', './out')
-  .option('-f, --filename <name>', 'output filename', 'project_bundle.txt')
+  .option('-o, --output <path>', 'output directory')
+  .option('-f, --filename <name>', 'output filename')
   .option('--config <path>', 'path to config file')
   .option('--no-timestamp', 'disable timestamp in filename')
   .action(async (directory, options) => {

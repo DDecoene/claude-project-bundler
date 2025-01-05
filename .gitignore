@@ -129,6 +129,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-cpb.config.json
-
 .DS_Store
