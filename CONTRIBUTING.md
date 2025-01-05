@@ -32,6 +32,7 @@ Our development process emphasizes code quality and maintainability:
 ## Running Tests
 
 Run the test suite:
+
 ```bash
 npm test
 ```
@@ -88,6 +89,7 @@ Write clear, meaningful commit messages:
 - Reference issues and pull requests in commit messages
 
 Example:
+
 ```
 Add file type detection for Python projects
 

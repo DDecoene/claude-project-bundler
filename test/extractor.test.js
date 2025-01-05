@@ -1,19 +1,19 @@
 // test/extractor.test.js
-import { test, describe } from 'node:test';
-import assert from 'node:assert';
-import { Extractor } from '../lib/extractor.js';
-import { join } from 'path';
-import { mkdirSync, writeFileSync, readFileSync, rmSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { test, describe } from "node:test";
+import assert from "node:assert";
+import { Extractor } from "../lib/extractor.js";
+import { join } from "path";
+import { mkdirSync, writeFileSync, readFileSync, rmSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-describe('Extractor', async () => {
-  const testDir = join(__dirname, 'test-extract');
-  const bundlePath = join(testDir, 'test-bundle.txt');
-  const outputDir = join(testDir, 'output');
+describe("Extractor", async () => {
+  const testDir = join(__dirname, "test-extract");
+  const bundlePath = join(testDir, "test-bundle.txt");
+  const outputDir = join(testDir, "output");
 
   const createValidBundle = () => {
     const bundle = `<?xml version="1.0" encoding="UTF-8"?>
@@ -31,9 +31,9 @@ describe('Extractor', async () => {
     </file>
   </files>
 </bundle>`;
-    
+
     mkdirSync(dirname(bundlePath), { recursive: true });
-    writeFileSync(bundlePath, bundle, 'utf8');
+    writeFileSync(bundlePath, bundle, "utf8");
     return bundle;
   };
 
@@ -46,7 +46,7 @@ describe('Extractor', async () => {
     rmSync(testDir, { recursive: true, force: true });
   });
 
-  test('extracts files correctly', () => {
+  test("extracts files correctly", () => {
     createValidBundle();
     const extractor = new Extractor(bundlePath, outputDir);
     const result = extractor.extract();
@@ -54,16 +54,16 @@ describe('Extractor', async () => {
     assert.strictEqual(result.success, true);
     assert.strictEqual(result.stats.totalFiles, 2);
     assert.strictEqual(result.stats.successful, 2);
-    
+
     // Verify file contents
-    const jsContent = readFileSync(join(outputDir, 'src/index.js'), 'utf8');
-    const mdContent = readFileSync(join(outputDir, 'README.md'), 'utf8');
-    
+    const jsContent = readFileSync(join(outputDir, "src/index.js"), "utf8");
+    const mdContent = readFileSync(join(outputDir, "README.md"), "utf8");
+
     assert.strictEqual(jsContent, 'console.log("Hello World");');
-    assert.strictEqual(mdContent, '# Test Project');
+    assert.strictEqual(mdContent, "# Test Project");
   });
 
-  test('handles empty bundle gracefully', () => {
+  test("handles empty bundle gracefully", () => {
     const emptyBundle = `<?xml version="1.0" encoding="UTF-8"?>
 <bundle>
   <metadata>
@@ -72,9 +72,9 @@ describe('Extractor', async () => {
   <files>
   </files>
 </bundle>`;
-    
-    writeFileSync(bundlePath, emptyBundle, 'utf8');
-    
+
+    writeFileSync(bundlePath, emptyBundle, "utf8");
+
     const extractor = new Extractor(bundlePath, outputDir);
     const result = extractor.extract();
 
@@ -83,11 +83,11 @@ describe('Extractor', async () => {
       totalFiles: 0,
       successful: 0,
       failed: 0,
-      fileTypes: {}
+      fileTypes: {},
     });
   });
 
-  test('handles invalid file paths gracefully', () => {
+  test("handles invalid file paths gracefully", () => {
     const bundle = `<?xml version="1.0" encoding="UTF-8"?>
 <bundle>
   <metadata>
@@ -102,9 +102,9 @@ describe('Extractor', async () => {
     </file>
   </files>
 </bundle>`;
-    
-    writeFileSync(bundlePath, bundle, 'utf8');
-    
+
+    writeFileSync(bundlePath, bundle, "utf8");
+
     const extractor = new Extractor(bundlePath, outputDir);
     const result = extractor.extract();
 
@@ -114,13 +114,13 @@ describe('Extractor', async () => {
     assert.strictEqual(result.success, false);
   });
 
-  test('respects output directory option', () => {
+  test("respects output directory option", () => {
     createValidBundle();
-    const customOutput = join(testDir, 'custom-output');
+    const customOutput = join(testDir, "custom-output");
     const extractor = new Extractor(bundlePath, customOutput);
     const result = extractor.extract();
 
     assert.strictEqual(result.success, true);
-    assert.ok(readFileSync(join(customOutput, 'src/index.js'), 'utf8'));
+    assert.ok(readFileSync(join(customOutput, "src/index.js"), "utf8"));
   });
 });

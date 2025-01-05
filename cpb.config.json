@@ -6,11 +6,7 @@
   },
   "files": {
     "include": {
-      "asciidoc": [
-        ".adoc",
-        ".asc",
-        ".asciidoc"
-      ],
+      "asciidoc": [".adoc", ".asc", ".asciidoc"],
       "code": [
         ".js",
         ".jsx",
@@ -24,18 +20,8 @@
         ".css",
         ".scss"
       ],
-      "docs": [
-        ".md",
-        ".json",
-        ".yaml",
-        ".yml"
-      ],
-      "config": [
-        ".json",
-        ".yml",
-        ".yaml",
-        ".toml"
-      ]
+      "docs": [".md", ".json", ".yaml", ".yml"],
+      "config": [".json", ".yml", ".yaml", ".toml"]
     },
     "exclude": {
       "directories": [
@@ -44,7 +30,6 @@
         "dist",
         "build",
         ".vercel",
-        ".github",
         ".vscode",
         "out"
       ],
@@ -56,9 +41,7 @@
         ".gitignore",
         "cpb.config.json"
       ],
-      "patterns": [
-        "*.log"
-      ]
+      "patterns": ["*.log"]
     },
     "binary": {
       "extensions": [
@@ -77,21 +60,11 @@
     }
   },
   "project": {
-    "mainFiles": [
-      "README.md"
-    ],
+    "mainFiles": ["README.md"],
     "typeRules": {
-      "node": [
-        "package.json"
-      ],
-      "python": [
-        "requirements.txt",
-        "setup.py"
-      ],
-      "asciidoc": [
-        ".adoc",
-        ".asc"
-      ]
+      "node": ["package.json"],
+      "python": ["requirements.txt", "setup.py"],
+      "asciidoc": [".adoc", ".asc"]
     }
   }
 }

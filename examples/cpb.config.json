@@ -1,86 +1,44 @@
 {
-    "output": {
-      "directory": "./cpb-output",
-      "filename": "project-knowledge.txt"
+  "output": {
+    "directory": "./cpb-output",
+    "filename": "project-knowledge.txt"
+  },
+
+  "files": {
+    "include": {
+      "text": [".txt", ".md", ".csv"],
+      "code": [".js", ".ts", ".jsx", ".tsx", ".py", ".rb"],
+      "docs": [".md", ".rst", ".adoc"],
+      "config": [".json", ".yml", ".yaml", ".toml"]
     },
-    
-    "files": {
-      "include": {
-        "text": [
-          ".txt",
-          ".md",
-          ".csv"
-        ],
-        "code": [
-          ".js",
-          ".ts",
-          ".jsx",
-          ".tsx",
-          ".py",
-          ".rb"
-        ],
-        "docs": [
-          ".md",
-          ".rst",
-          ".adoc"
-        ],
-        "config": [
-          ".json",
-          ".yml",
-          ".yaml",
-          ".toml"
-        ]
-      },
-      
-      "exclude": {
-        "directories": [
-          "node_modules",
-          "dist",
-          "build",
-          "coverage",
-          "__pycache__",
-          ".git"
-        ],
-        "files": [
-          ".env",
-          ".DS_Store",
-          "package-lock.json",
-          "yarn.lock"
-        ],
-        "patterns": [
-          "*.test.*",
-          "*.spec.*",
-          "*.min.*",
-          "*.map"
-        ]
-      },
-      
-      "binary": {
-        "extensions": [
-          ".png",
-          ".jpg",
-          ".jpeg",
-          ".gif",
-          ".pdf",
-          ".zip"
-        ],
-        "maxSize": 1048576
-      }
-    },
-    
-    "project": {
-      "mainFiles": [
-        "README.md",
-        "package.json",
-        "setup.py",
-        "requirements.txt"
+
+    "exclude": {
+      "directories": [
+        "node_modules",
+        "dist",
+        "build",
+        "coverage",
+        "__pycache__",
+        ".git"
       ],
-      "typeRules": {
-        "node": ["package.json"],
-        "python": ["requirements.txt", "setup.py"],
-        "ruby": ["Gemfile"],
-        "java": ["pom.xml", "build.gradle"],
-        "asciidoc": [".adoc", ".asc"]
-      }
+      "files": [".env", ".DS_Store", "package-lock.json", "yarn.lock"],
+      "patterns": ["*.test.*", "*.spec.*", "*.min.*", "*.map"]
+    },
+
+    "binary": {
+      "extensions": [".png", ".jpg", ".jpeg", ".gif", ".pdf", ".zip"],
+      "maxSize": 1048576
+    }
+  },
+
+  "project": {
+    "mainFiles": ["README.md", "package.json", "setup.py", "requirements.txt"],
+    "typeRules": {
+      "node": ["package.json"],
+      "python": ["requirements.txt", "setup.py"],
+      "ruby": ["Gemfile"],
+      "java": ["pom.xml", "build.gradle"],
+      "asciidoc": [".adoc", ".asc"]
     }
   }
+}

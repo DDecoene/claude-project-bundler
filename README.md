@@ -107,6 +107,7 @@ Or manually create `cpb.config.json` in your project root:
 CPB generates a structured XML document containing:
 
 1. Project Metadata
+
    - Creation timestamp
    - Project path
    - Configuration settings
@@ -160,6 +161,7 @@ Commands:
 ## Using with Claude
 
 1. Generate your project bundle:
+
    ```bash
    cpb
    ```
@@ -167,8 +169,9 @@ Commands:
 2. Start a new conversation with Claude and share the generated bundle file.
 
 3. Provide context and instructions for optimal collaboration. Here's an example that combines project context with specific working preferences:
+
    ```
-   I'm working on [project description]. I've shared a CPB (Claude Project Bundle) 
+   I'm working on [project description]. I've shared a CPB (Claude Project Bundle)
    that contains my project's current state. Please reference this context as we work.
 
    Please follow these instructions for our collaboration:
@@ -191,6 +194,7 @@ cpb extract path/to/bundle.txt -o ./extracted-project
 ```
 
 This will:
+
 - Parse the bundle XML file
 - Recreate the original directory structure
 - Extract all files with their content
@@ -198,6 +202,7 @@ This will:
 - Provide statistics about the extraction process
 
 This feature is useful for:
+
 - Project backup and recovery
 - Creating project templates
 - Sharing project structures
