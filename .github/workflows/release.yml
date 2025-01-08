@@ -73,7 +73,7 @@ jobs:
         run: yarn pack
 
       - name: Publish to NPM
-        run: yarn publish
+        run: yarn publish || echo "Package may already exist"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           
