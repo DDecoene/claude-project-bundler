@@ -76,15 +76,3 @@ jobs:
         run: yarn publish || echo "Package may already exist"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          
-      - name: Setup Node.js for GitHub Packages
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          registry-url: 'https://npm.pkg.github.com'
-          cache: 'yarn'
-
-      - name: Publish to GitHub Packages
-        run: yarn publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
