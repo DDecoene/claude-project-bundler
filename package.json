@@ -15,6 +15,7 @@
         "CONTRIBUTING.md"
     ],
     "scripts": {
+        "dev": "node bin/cpb.js",
         "test": "node --test test/*.test.js",
         "format": "prettier --write .",
         "lint": "eslint .",

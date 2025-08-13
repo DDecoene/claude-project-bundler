@@ -57,6 +57,18 @@ Extract project files from a bundle:
 cpb extract path/to/bundle.txt -o ./extracted-project
 ```
 
+### Listing Files (Dry Run)
+
+Before creating a full bundle, you can perform a \"dry run\" to see a list of all files that will be included based on your current configuration. This is useful for verifying your `include` and `exclude` rules.
+
+```bash
+# List files in the current directory
+cpb list
+
+# List files for a specific project
+cpb list /path/to/your/project
+```
+
 ## Configuration
 
 CPB works with sensible defaults but can be customized through a configuration file. Create one using:
@@ -84,10 +96,11 @@ Or manually create `cpb.config.json` in your project root:
     "exclude": {
       "directories": ["node_modules", "dist", "build", ".git"],
       "files": [".env", ".DS_Store", "package-lock.json"],
+      "patterns": ["*..git", ".env", ".DS_Store", "package-lock.json"],
       "patterns": ["*.test.*", "*.spec.*"]
     },
     "binary": {
-      "extensions": [".png", ".jpg", ".pdf", ".zip"],
+      "extensions": [".png", "jpg", ".pdf", "zip"],
       "maxSize": 1048576
     }
   },
@@ -140,7 +153,7 @@ Example output structure:
 The CLI provides several commands and options:
 
 ```bash
-Usage: cpb [options] [directory]
+Usage: cpb [options] [command]
 
 Options:
   -V, --version           Output version number
@@ -156,17 +169,11 @@ Commands:
   extract <bundle>        Extract project files from a bundle
     Options:
       -o, --output <directory>  Output directory (default: "./extracted")
+  list [options] [dir]    List files to be included in a bundle (dry run)
 ```
 
 ## Using with Claude
-
-1. Generate your project bundle:
-
-   ```bash
-   cpb
-   ```
-
-2. Start a new conversation with Claude and share the generated bundle file.
+Start a new conversation with Claude and share the generated bundle file.
 
 3. Provide context and instructions for optimal collaboration. Here's an example that combines project context with specific working preferences:
 
@@ -231,6 +238,6 @@ Dennis Decoene
 
 ## Support
 
-- Report bugs: [Issue Tracker](https://github.com/ddecoene/claude-project-bundler/issues)
-- Get help: [Discussions](https://github.com/ddecoene/claude-project-bundler/discussions)
-- Documentation: [Wiki](https://github.com/ddecoene/claude-project-bundler/wiki)
+	- Report bugs: [Issue Tracker](https://github.com/ddecoene/claude-project-bundler/issues)
+	- Get help: [Discussions](https://github.com/ddecoene/claude-project-bundler/discussions)
+	- Documentation: [Wiki](https://github.com/ddecoene/claude-project-bundler/wiki)

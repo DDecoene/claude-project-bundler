@@ -34,52 +34,7 @@ program
   .description("Create project knowledge bundles for Claude AI assistant")
   .version(packageJson.version);
 
-// Default command (bundle)
-program
-  .command("bundle", { isDefault: true })
-  .description("create a project bundle")
-  .argument("[directory]", "project directory to bundle", ".")
-  .option("-o, --output <path>", "output directory")
-  .option("-f, --filename <name>", "output filename")
-  .option("--config <path>", "path to config file")
-  .option("--no-timestamp", "disable timestamp in filename")
-  .action(async (directory, options) => {
-    try {
-      const projectPath = resolve(directory);
-
-      // Log initial settings
-      logger.info("Creating Claude Project Bundle...");
-      logger.debug(`Directory: ${projectPath}`);
-      logger.debug(`Output: ${options.output}`);
-      logger.debug(`Filename: ${options.filename}`);
-      if (options.config) {
-        logger.debug(`Config: ${options.config}`);
-      }
-      logger.debug(`Timestamp enabled: ${options.timestamp !== false}`);
-
-      const bundler = new Bundler(projectPath, {
-        configPath: options.config,
-        output: {
-          directory: options.output,
-          filename: options.filename,
-          timestamped: options.timestamp !== false,
-        },
-      });
-
-      const result = await bundler.bundle();
-
-      // Success and stats messages that are always shown
-      logger.success("\n✨ Bundle created successfully!");
-      logger.stats(`\nLocation: ${result.outputPath}\n`);
-      logger.stats("\nStats:");
-      Object.entries(result.stats.fileTypes).forEach(([type, count]) => {
-        logger.stats(`  ${type}: ${count} files`);
-      });
-    } catch (error) {
-      logger.error("\nError creating bundle:", error.message);
-      process.exit(1);
-    }
-  });
+// --- All specific commands must be defined BEFORE the default command ---
 
 // Init command for creating config file
 program
@@ -145,6 +100,106 @@ program
       }
     } catch (error) {
       logger.error("\nError extracting files:", error.message);
+      process.exit(1);
+    }
+  });
+
+// NEW: List command for the dry run
+program
+  .command("list")
+  .description("List files that would be included in a bundle (dry run)")
+  .argument("[directory]", "project directory to inspect", ".")
+  .option("--config <path>", "path to config file")
+  .action(async (directory, options) => {
+    try {
+      const projectPath = resolve(directory);
+      logger.info("Performing a dry run to list files...");
+      logger.debug(`Directory: ${projectPath}`);
+      if (options.config) {
+        logger.debug(`Config: ${options.config}`);
+      }
+
+      // Silence the logger for the bundler constructor to keep output clean
+      logger.silence();
+      const bundler = new Bundler(projectPath, {
+        configPath: options.config,
+        output: {},
+      });
+      // Unsilence logger to show the results
+      logger.unsilence();
+
+      const files = await bundler.listFiles();
+
+      if (files.length === 0) {
+        logger.warn("\nNo files found matching the configuration criteria.");
+        return;
+      }
+
+      logger.success(
+        `\nFound ${files.length} files that will be included in the bundle:`,
+      );
+
+      const fileTypes = {};
+      files.forEach((file) => {
+        const fileType = bundler.getFileType(file.path);
+        fileTypes[fileType] = (fileTypes[fileType] || 0) + 1;
+        logger.stats(`  - ${file.path} ${chalk.gray(`(type: ${fileType})`)}`);
+      });
+
+      logger.stats("\nStats Summary:");
+      Object.entries(fileTypes).forEach(([type, count]) => {
+        logger.stats(`  ${chalk.blue(type)}: ${count} files`);
+      });
+
+    } catch (error) {
+      logger.error("\nError listing files:", error.message);
+      process.exit(1);
+    }
+  });
+
+// --- Default command (bundle) must be defined LAST ---
+program
+  .command("bundle", { isDefault: true })
+  .description("create a project bundle")
+  .argument("[directory]", "project directory to bundle", ".")
+  .option("-o, --output <path>", "output directory")
+  .option("-f, --filename <name>", "output filename")
+  .option("--config <path>", "path to config file")
+  .option("--no-timestamp", "disable timestamp in filename")
+  .action(async (directory, options) => {
+    try {
+      const projectPath = resolve(directory);
+
+      // Log initial settings
+      logger.info("Creating Claude Project Bundle...");
+      logger.debug(`Directory: ${projectPath}`);
+      logger.debug(`Output: ${options.output}`);
+      logger.debug(`Filename: ${options.filename}`);
+      if (options.config) {
+        logger.debug(`Config: ${options.config}`);
+      }
+      logger.debug(`Timestamp enabled: ${options.timestamp !== false}`);
+
+      const bundler = new Bundler(projectPath, {
+        configPath: options.config,
+        output: {
+          directory: options.output,
+          filename: options.filename,
+          timestamped: options.timestamp !== false,
+        },
+      });
+
+      const result = await bundler.bundle();
+
+      // Success and stats messages that are always shown
+      logger.success("\n✨ Bundle created successfully!");
+      logger.stats(`\nLocation: ${result.outputPath}\n`);
+      logger.stats("\nStats:");
+      Object.entries(result.stats.fileTypes).forEach(([type, count]) => {
+        logger.stats(`  ${type}: ${count} files`);
+      });
+    } catch (error) {
+      logger.error("\nError creating bundle:", error.message);
       process.exit(1);
     }
   });
